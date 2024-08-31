@@ -14,7 +14,7 @@ colab_auth_token = '2lNMiyvf6N7gK2ugDRWBJwS3vDS_5y92apuQD2cqBgmUKbF64'
 ngrok.set_auth_token(colab_auth_token)
 
 try:
-    public_url = ngrok.connect(6000)
+    public_url = ngrok.connect(10000)
     print(f" * Ngrok tunnel available at: {public_url}")
 except Exception as e:
     print(f"Erro ao conectar com Ngrok: {str(e)}")
