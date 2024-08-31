@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)  # Configura CORS para todas as rotas
+# CORS(app)  # Configura CORS para todas as rotas
 
 # colab_auth_token = '2lNMiyvf6N7gK2ugDRWBJwS3vDS_5y92apuQD2cqBgmUKbF64'
 
@@ -51,6 +51,7 @@ def send_transcript_to_webhook(webhook_url, video_url, transcript):
         print(f"Erro ao enviar transcrição: {e}", file=sys.stderr)
         print(f"Resposta do servidor: {e.response.text if e.response else 'Sem resposta'}", file=sys.stderr)
         return None
+
 @app.route('/transcribe', methods=['POST'])
 def transcribe():
     # if request.method == 'OPTIONS':
