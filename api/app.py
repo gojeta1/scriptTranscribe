@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
-# CORS(app)  # Configura CORS para todas as rotas
+CORS(app, resources={r"/*": {"origins": "*"}})  # Configura CORS para todas as rotas, permitindo qualquer origem
 
 # colab_auth_token = '2lNMiyvf6N7gK2ugDRWBJwS3vDS_5y92apuQD2cqBgmUKbF64'
 
