@@ -51,16 +51,16 @@ def send_transcript_to_webhook(webhook_url, video_url, transcript):
         print(f"Erro ao enviar transcrição: {e}", file=sys.stderr)
         print(f"Resposta do servidor: {e.response.text if e.response else 'Sem resposta'}", file=sys.stderr)
         return None
-@app.route('/transcribe', methods=['POST', 'OPTIONS'])
+@app.route('/transcribe', methods=['POST'])
 def transcribe():
-    if request.method == 'OPTIONS':
-        # Pré-voo CORS
-        response = app.make_default_options_response()
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-        response.headers.add('Access-Control-Allow-Methods', 'POST,OPTIONS')
-        return response
-    else:
+    # if request.method == 'OPTIONS':
+    #     # Pré-voo CORS
+    #     response = app.make_default_options_response()
+    #     response.headers.add('Access-Control-Allow-Origin', '*')
+    #     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    #     response.headers.add('Access-Control-Allow-Methods', 'POST,OPTIONS')
+    #     return response
+    # else:
         webhook_url = 'https://hook.us1.make.com/l7t8pmuzqax2wa1vvygnxb9k85rdeo6b'
         
         # Verificar se o conteúdo é JSON
