@@ -39,8 +39,15 @@ def send_transcript_to_webhook(webhook_url, video_url, transcript):
         print(f"Resposta do servidor: {e.response.text if e.response else 'Sem resposta'}", file=sys.stderr)
         return None
 
-@app.route('/transcribe', methods=['POST'])
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify({"message": "Bem-vindo à API de transcrição de vídeos do YouTube"}), 200
+
+@app.route('/transcribe', methods=['POST', 'OPTIONS'])
 def transcribe():
+    if request.method == 'OPTIONS':
+        return '', 200
+    
     webhook_url = 'https://hook.us1.make.com/l7t8pmuzqax2wa1vvygnxb9k85rdeo6b'
     
     if not request.is_json:
