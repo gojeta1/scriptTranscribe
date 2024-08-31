@@ -1,6 +1,6 @@
 import requests
 from youtube_transcript_api import YouTubeTranscriptApi
-# import ngrok
+import ngrok
 import sys
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -8,17 +8,17 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)  # Configura CORS para todas as rotas
 
-# colab_auth_token = '2lNMiyvf6N7gK2ugDRWBJwS3vDS_5y92apuQD2cqBgmUKbF64'
+colab_auth_token = '2lNMiyvf6N7gK2ugDRWBJwS3vDS_5y92apuQD2cqBgmUKbF64'
 
-# # Configurar o Ngrok com o token obtido
-# ngrok.set_auth_token(colab_auth_token)
+# Configurar o Ngrok com o token obtido
+ngrok.set_auth_token(colab_auth_token)
 
-# try:
-#     public_url = ngrok.connect(6000)
-#     print(f" * Ngrok tunnel available at: {public_url}")
-# except Exception as e:
-#     print(f"Erro ao conectar com Ngrok: {str(e)}")
-#     sys.exit(1)
+try:
+    public_url = ngrok.connect(6000)
+    print(f" * Ngrok tunnel available at: {public_url}")
+except Exception as e:
+    print(f"Erro ao conectar com Ngrok: {str(e)}")
+    sys.exit(1)
     
 def get_video_id(url):
     if 'youtu.be' in url:
