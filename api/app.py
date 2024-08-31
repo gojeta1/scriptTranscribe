@@ -3,6 +3,7 @@ from youtube_transcript_api import YouTubeTranscriptApi
 import sys
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import os
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -78,5 +79,5 @@ def transcribe():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    from werkzeug.serving import run_simple
-    run_simple('0.0.0.0', 10000, app, ssl_context='adhoc')
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
