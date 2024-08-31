@@ -52,12 +52,12 @@ def send_transcript_to_webhook(webhook_url, video_url, transcript):
         print(f"Resposta do servidor: {e.response.text if e.response else 'Sem resposta'}", file=sys.stderr)
         return None
 
-@app.route('/transcribe', methods=['POST', 'OPTIONS'])
+@app.route('/transcribe', methods=['POST'])
 def transcribe():
-    if request.method == 'OPTIONS':
-        # Pré-voo CORS
-        response = app.make_default_options_response()
-    else:
+    # if request.method == 'OPTIONS':
+    #     # Pré-voo CORS
+    #     response = app.make_default_options_response()
+    # else:
         webhook_url = 'https://hook.us1.make.com/l7t8pmuzqax2wa1vvygnxb9k85rdeo6b'
         
         # Verificar se o conteúdo é JSON
@@ -88,11 +88,11 @@ def transcribe():
             print(f"Erro durante o processamento: {str(e)}", file=sys.stderr)
             return jsonify({"error": str(e)}), 500
 
-    # Adicionar cabeçalhos CORS à resposta
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-    return response
+    # # Adicionar cabeçalhos CORS à resposta
+    # response.headers.add('Access-Control-Allow-Origin', '*')
+    # response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    # response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    # return response
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=10000)
