@@ -1,6 +1,6 @@
 import requests
 from youtube_transcript_api import YouTubeTranscriptApi
-import ngrok
+# import ngrok
 import sys
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -8,17 +8,17 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)  # Configura CORS para todas as rotas
 
-colab_auth_token = '2lNMiyvf6N7gK2ugDRWBJwS3vDS_5y92apuQD2cqBgmUKbF64'
+# colab_auth_token = '2lNMiyvf6N7gK2ugDRWBJwS3vDS_5y92apuQD2cqBgmUKbF64'
 
-# Configurar o Ngrok com o token obtido
-ngrok.set_auth_token(colab_auth_token)
+# # Configurar o Ngrok com o token obtido
+# ngrok.set_auth_token(colab_auth_token)
 
-try:
-    public_url = ngrok.connect(10000)
-    print(f" * Ngrok tunnel available at: {public_url}")
-except Exception as e:
-    print(f"Erro ao conectar com Ngrok: {str(e)}")
-    sys.exit(1)
+# try:
+#     public_url = ngrok.connect(10000)
+#     print(f" * Ngrok tunnel available at: {public_url}")
+# except Exception as e:
+#     print(f"Erro ao conectar com Ngrok: {str(e)}")
+#     sys.exit(1)
     
 def get_video_id(url):
     if 'youtu.be' in url:
@@ -51,13 +51,16 @@ def send_transcript_to_webhook(webhook_url, video_url, transcript):
         print(f"Erro ao enviar transcrição: {e}", file=sys.stderr)
         print(f"Resposta do servidor: {e.response.text if e.response else 'Sem resposta'}", file=sys.stderr)
         return None
-
-@app.route('/transcribe', methods=['POST'])
+@app.route('/transcribe', methods=['POST', 'OPTIONS'])
 def transcribe():
-    # if request.method == 'OPTIONS':
-    #     # Pré-voo CORS
-    #     response = app.make_default_options_response()
-    # else:
+    if request.method == 'OPTIONS':
+        # Pré-voo CORS
+        response = app.make_default_options_response()
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'POST,OPTIONS')
+        return response
+    else:
         webhook_url = 'https://hook.us1.make.com/l7t8pmuzqax2wa1vvygnxb9k85rdeo6b'
         
         # Verificar se o conteúdo é JSON
@@ -87,12 +90,6 @@ def transcribe():
         except Exception as e:
             print(f"Erro durante o processamento: {str(e)}", file=sys.stderr)
             return jsonify({"error": str(e)}), 500
-
-    # # Adicionar cabeçalhos CORS à resposta
-    # response.headers.add('Access-Control-Allow-Origin', '*')
-    # response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    # response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-    # return response
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=10000)
