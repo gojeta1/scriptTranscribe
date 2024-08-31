@@ -78,4 +78,5 @@ def transcribe():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=10000)
+    from werkzeug.serving import run_simple
+    run_simple('0.0.0.0', 10000, app, ssl_context='adhoc')
